@@ -118,72 +118,77 @@ def json_splitter_create_and_upsert_vectors(index, path, chapter_metadata, embed
     except PineconeApiException:
       print('Pinecone exception occured. File is bigger than 2MB! Igoring.')
 
-#WALS documents are available in text, html, and json formats
-#Chunking plain text seems to give the worst results, likely becaues it's blind to context right now
-#html gives better results, because WALS is already structured by headings
-#json gives best results, because each text blob can be augemented with some metadata
-#this allows every paragraph in a section to carry information about the section name and topic
+def setup_vectorstore(split_type='json', use_existing_index=True):
+    #WALS documents are available in text, html, and json formats
+    #Chunking plain text seems to give the worst results, likely becaues it's blind to context right now
+    #html gives better results, because WALS is already structured by headings
+    #json gives best results, because each text blob can be augemented with some metadata
+    #this allows every paragraph in a section to carry information about the section name and topic
 
-split_type = 'json'
+    split_type = 'json'
 
-text_embedding_model = 'text-embedding-ada-002'
-#TODD: experiment with other embedding models
-embeddings = LangChainOpenAIEmbeddings(
-    model = text_embedding_model,
-    openai_api_key=userdata.get('OPENAI_KEY'))
+    text_embedding_model = 'text-embedding-ada-002'
+    #TODD: experiment with other embedding models
+    embeddings = LangChainOpenAIEmbeddings(
+        model = text_embedding_model,
+        openai_api_key=userdata.get('OPENAI_KEY'))
 
-if split_type == 'text':
-  tokenizer = tiktoken.get_encoding('p50k_base')
-  splitter = RecursiveCharacterTextSplitter(
-      chunk_size=400,
-      chunk_overlap=20,
-      length_function=tiktoken_len,
-      separators=["\n\n", "\n", " ", ""]
-      )
-elif split_type == 'html':
-  headers = [("h2", "topic"), ("h5", "introduction")]
-  splitter = HTMLHeaderTextSplitter(headers)
-elif split_type == 'json':
-  pass #no extra formatting required
+    if split_type == 'text':
+      tokenizer = tiktoken.get_encoding('p50k_base')
+      splitter = RecursiveCharacterTextSplitter(
+          chunk_size=400,
+          chunk_overlap=20,
+          length_function=tiktoken_len,
+          separators=["\n\n", "\n", " ", ""]
+          )
+    elif split_type == 'html':
+      headers = [("h2", "topic"), ("h5", "introduction")]
+      splitter = HTMLHeaderTextSplitter(headers)
+    elif split_type == 'json':
+      pass #no extra formatting required
 
-use_existing_index = True
+    use_existing_index = True
 
-pc = Pinecone(api_key=userdata.get('PINECONE_TOKEN'))
-index_name = 'starter-index'
+    pc = Pinecone(api_key=userdata.get('PINECONE_TOKEN'))
+    index_name = 'starter-index'
 
-if use_existing_index:
-  index = pc.Index(index_name)
-else:
-  #See https://docs.pinecone.io/docs/manage-indexes#create-a-pod-based-index
-  pc.delete_index(index_name)
-  pc.create_index(name=index_name, dimension=1536, metric="cosine", spec=PodSpec(environment="gcp-starter"))
-  index = pc.Index(index_name)
-  #Get table of contents and other general metadata about WALS
-  with open('/content/drive/MyDrive/WALS/chapter_metadata.csv', encoding='utf-8') as file:
-    file_content = file.read()
-  #The metata below is for human readability in the Pincone UI, it is not provided to the model
-  chapter_metadata = load_chapter_metadata('/content/drive/MyDrive/WALS/chapter_metadata.csv')
+    if use_existing_index:
+      index = pc.Index(index_name)
+    else:
+      #See https://docs.pinecone.io/docs/manage-indexes#create-a-pod-based-index
+      pc.delete_index(index_name)
+      pc.create_index(name=index_name, dimension=1536, metric="cosine", spec=PodSpec(environment="gcp-starter"))
+      index = pc.Index(index_name)
+      #Get table of contents and other general metadata about WALS
+      with open('/content/drive/MyDrive/WALS/chapter_metadata.csv', encoding='utf-8') as file:
+        file_content = file.read()
+      #The metata below is for human readability in the Pincone UI, it is not provided to the model
+      chapter_metadata = load_chapter_metadata('/content/drive/MyDrive/WALS/chapter_metadata.csv')
 
-  if split_type == 'text':
-    text_splitter_create_and_upsert_vectors(index, '/content/drive/MyDrive/WALS/', chapter_metadata, splitter, embeddings, subdirectory='chapters_html')
-  elif split_type == 'html':
-    html_splitter_create_and_upsert_vectors(index, '/content/drive/MyDrive/WALS/chapters_html', chapter_metadata, splitter, embeddings)
-  elif split_type == 'json':
-    json_splitter_create_and_upsert_vectors(index, '/content/drive/MyDrive/WALS/chapters_json', chapter_metadata, embeddings)
+      if split_type == 'text':
+        text_splitter_create_and_upsert_vectors(index, '/content/drive/MyDrive/WALS/', chapter_metadata, splitter, embeddings, subdirectory='chapters_html')
+      elif split_type == 'html':
+        html_splitter_create_and_upsert_vectors(index, '/content/drive/MyDrive/WALS/chapters_html', chapter_metadata, splitter, embeddings)
+      elif split_type == 'json':
+        json_splitter_create_and_upsert_vectors(index, '/content/drive/MyDrive/WALS/chapters_json', chapter_metadata, embeddings)
 
-vectorstore = LangChainPinecone(index, embeddings, text_key='text')
+    vectorstore = LangChainPinecone(index, embeddings, text_key='text')
 
-llm = LangChainChatOpenAI(
-    openai_api_key=userdata.get('OPENAI_KEY'),
-    model_name='gpt-3.5-turbo',
-    temperature=0.8
-)
+    return vectorstore
 
-qa = RetrievalQA.from_chain_type(
-    llm=llm,
-    retriever=vectorstore.as_retriever()
-)
+def TalkToWALS()
 
-query = 'Who wrote chapter 28?'
-response = qa.invoke(query)
-print(response['result'])
+    vectorstore = setup_vectorstore()
+
+    llm = LangChainChatOpenAI(
+        openai_api_key=userdata.get('OPENAI_KEY'),
+        model_name='gpt-3.5-turbo',
+        temperature=0.8
+    )
+
+    qa = RetrievalQA.from_chain_type(
+        llm=llm,
+        retriever=vectorstore.as_retriever()
+    )
+
+    return qa
