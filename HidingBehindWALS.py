@@ -117,7 +117,7 @@ def setup_vectorstore(split_type='json', use_existing_index=True):
     #json gives best results, because each text blob can be augemented with some metadata
     #this allows every paragraph in a section to carry information about the section name and topic
 
-    split_type = 'json'
+    split_type = split_type
 
     text_embedding_model = 'text-embedding-ada-002'
     #TODD: experiment with other embedding models
@@ -138,8 +138,6 @@ def setup_vectorstore(split_type='json', use_existing_index=True):
       splitter = HTMLHeaderTextSplitter(headers)
     elif split_type == 'json':
       pass #no extra formatting required
-
-    use_existing_index = True
 
     pc = Pinecone(api_key=userdata.get('PINECONE_TOKEN'))
     index_name = 'starter-index'
@@ -168,7 +166,7 @@ def setup_vectorstore(split_type='json', use_existing_index=True):
 
     return vectorstore
 
-def TalkToWALS()
+def TalkToWALS():
 
     vectorstore = setup_vectorstore()
 
