@@ -1,11 +1,3 @@
-!pip install -qU \
-    cohere \
-    langchain \
-    tiktoken \
-    pinecone-client \
-    langchain-openai \
-    langchain-pinecone
-
 import os
 import json
 from uuid import uuid4
