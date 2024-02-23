@@ -221,7 +221,7 @@ def setup_vectorstore(make_new_index = False,
   return index, embeddings
 
 def setup_agent():
-  index, embedding = setup_vectorstore()
+  index, embeddings = setup_vectorstore()
   vectorstore = LangChainPinecone(index, embeddings, text_key='text')
 
   llm = LangChainChatOpenAI(
