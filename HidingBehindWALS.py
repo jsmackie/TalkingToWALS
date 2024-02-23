@@ -12,7 +12,7 @@ from langchain.chains import RetrievalQA
 from langchain.text_splitter import RecursiveCharacterTextSplitter, HTMLHeaderTextSplitter
 from langchain_openai import ChatOpenAI as LangChainChatOpenAI
 from langchain_openai import OpenAIEmbeddings as LangChainOpenAIEmbeddings
-from langchain_pinecone import Pinecone as LangChainPinecone
+from langchain_pinecone import PineconeVectorStore as LangChainPinecone
 
 def load_chapter_metadata(path):
   with open(os.path.join(path)) as f:
