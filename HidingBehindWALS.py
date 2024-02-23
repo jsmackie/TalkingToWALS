@@ -156,7 +156,7 @@ def upsert_language_data(index, embeddings):
     vector = [{
       "id":str(uuid4()),
       "values": embeds[0],
-      "metadata": {"topic": f"Data about the {family} family"}
+      "metadata": {"topic": f"Data about the {family} family"},
       "text": full_text,
     }]
 
