@@ -14,10 +14,6 @@ from langchain_openai import ChatOpenAI as LangChainChatOpenAI
 from langchain_openai import OpenAIEmbeddings as LangChainOpenAIEmbeddings
 from langchain_pinecone import Pinecone as LangChainPinecone
 
-def tiktoken_len(text):
-    tokens = tokenizer.encode(text, disallowed_special=())
-    return len(tokens)
-
 def load_chapter_metadata(path):
   with open(os.path.join(path)) as f:
     headers = f.readline().strip().split(',')
@@ -130,9 +126,9 @@ def setup_vectorstore(split_type='json', use_existing_index=True):
       splitter = RecursiveCharacterTextSplitter(
           chunk_size=400,
           chunk_overlap=20,
-          length_function=tiktoken_len,
-          separators=["\n\n", "\n", " ", ""]
-          )
+          length_function= lambda text: len(tokenizer.encode(text,
+                                                             disallowed_special=(),
+                                                             separators=["\n\n", "\n", " ", ""])))
     elif split_type == 'html':
       headers = [("h2", "topic"), ("h5", "introduction")]
       splitter = HTMLHeaderTextSplitter(headers)
