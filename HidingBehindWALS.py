@@ -10,11 +10,9 @@ import gradio as gr
 
 from pinecone import Pinecone, PodSpec, PineconeApiException
 
-from langchain.chains import RetrievalQA
 from langchain.text_splitter import RecursiveCharacterTextSplitter, HTMLHeaderTextSplitter
-from langchain_openai import ChatOpenAI as LangChainChatOpenAI
 from langchain_openai import OpenAIEmbeddings as LangChainOpenAIEmbeddings
-from langchain_pinecone import PineconeVectorStore as LangChainPinecone
+
 
 def tiktoken_len(text):
     tokens = tokenizer.encode(text, disallowed_special=())
@@ -243,60 +241,3 @@ def setup_vectorstore(make_new_index = False,
       html_prechunked_create_and_upsert_vectors(index, '/content/drive/MyDrive/WALS/html_chunks', chapter_metadata, embeddings)
 
   return index, embeddings
-
-def setup_agent():
-  index, embeddings = setup_vectorstore(make_new_index=False,
-                                      upsert_metadata=False,
-                                      upsert_chapter_data=False)
-  vectorstore = LangChainPinecone(index, embeddings, text_key='text')
-
-  llm = LangChainChatOpenAI(
-      openai_api_key=userdata.get('OPENAI_KEY'),
-      model_name='gpt-3.5-turbo',
-      temperature=0.9
-  )
-
-  agent = RetrievalQA.from_chain_type(
-      llm=llm,
-      retriever=vectorstore.as_retriever()
-  )
-  return agent
-
-class WALS():
-
-  def __init__(self):
-    self.agent = self.setup_agent()
-    self.preamble = """
-    You are an expert on the World Atlas of Language Structures, also called WALS.
-    Assume that any questions you are asked are referring to WALS, so if someone says Chapter 12
-    they mean Chapter 12 in WALS, if they ask about verbal morphology they really mean what does
-    WALS say about verbal morphology. Act like a helpful librarian who knows about WALS.
-    """
-
-  def TalkToWALS(self, query):
-    response = self.agent.invoke('\n'.join([preamble, query]))
-    print(response['result'])
-
-  def setup_agent(self):
-    index, embeddings = setup_vectorstore(make_new_index=False,
-                                        upsert_metadata=False,
-                                        upsert_chapter_data=False)
-    vectorstore = LangChainPinecone(index, embeddings, text_key='text')
-
-    llm = LangChainChatOpenAI(
-        openai_api_key=userdata.get('OPENAI_KEY'),
-        model_name='gpt-3.5-turbo',
-        temperature=0.9
-    )
-
-    agent = RetrievalQA.from_chain_type(
-        llm=llm,
-        retriever=vectorstore.as_retriever()
-    )
-    return agent
-
-  def interact(self, message, history):
-    response = self.agent.invoke('\n'.join([self.preamble, message]))
-    return responses
-
-wals.TalkToWALS('Give me a summary of Chapter 145')
