@@ -1,7 +1,7 @@
 from langchain_pinecone import PineconeVectorStore as LangChainPinecone
 from langchain_openai import ChatOpenAI as LangChainChatOpenAI
 from langchain.chains import RetrievalQA
-from hidingbehindwals import setup_vectorstore
+from HidingBehindWALS import setup_vectorstore
 
 class WALSBuilder():
 
