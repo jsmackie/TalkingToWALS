@@ -40,4 +40,5 @@ class WALSBuilder:
     def interact(self, message, history):
 
         response = self.agent.invoke(''.join([self.preamble, message]))
-        return response['result']
+        text = response['result']
+        return text
