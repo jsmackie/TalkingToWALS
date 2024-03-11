@@ -3,7 +3,7 @@ from langchain_openai import ChatOpenAI as LangChainChatOpenAI
 from langchain.chains import RetrievalQA
 from HidingBehindWALS import setup_vectorstore
 
-class WALSBuilder():
+class WALSBuilder:
 
   def __init__(self, open_ai_key):
     self.agent = self.setup_agent(open_ai_key)
