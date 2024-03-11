@@ -1,13 +1,12 @@
 from langchain_pinecone import PineconeVectorStore as LangChainPinecone
 from langchain_openai import ChatOpenAI as LangChainChatOpenAI
 from langchain.chains import RetrievalQA
-
 from hidingbehindwals import setup_vectorstore
 
-class WALS():
+class WALSBuilder():
 
-  def __init__(self):
-    self.agent = self.setup_agent()
+  def __init__(self, open_ai_key):
+    self.agent = self.setup_agent(open_ai_key)
     self.preamble = """
     You are an expert on the World Atlas of Language Structures, also called WALS.
     Assume that any questions you are asked are referring to WALS, so if someone says Chapter 12
