@@ -16,7 +16,7 @@ class WALSBuilder:
         with a passion for language instead.
         """
         
-    def set_agent_personality(self, name):
+    def set_agent_personality(self, name=None):
         self.preamble = 'You are an expert on the World Atlas of Language Structures, also called WALS.'
         if name == 'sagan':
             self.preamble += """
