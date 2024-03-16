@@ -8,7 +8,7 @@ class WALSBuilder:
 
     def __init__(self, open_ai_key, personality=None):
         self.agent = self.setup_agent(open_ai_key)
-        self.set_personality(personality)
+        self.set_agent_personality(personality)
 
     def set_agent_personality(self, personality=None):
         self.preamble = 'You are an expert on the World Atlas of Language Structures, also called WALS.'
