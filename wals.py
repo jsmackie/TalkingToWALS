@@ -6,25 +6,19 @@ from HidingBehindWALS import setup_vectorstore
 
 class WALSBuilder:
 
-    def __init__(self, open_ai_key):
+    def __init__(self, open_ai_key, personality=None):
         self.agent = self.setup_agent(open_ai_key)
-        self.set_agent_personality()
-        self.preamble = """
-        You are an expert on the World Atlast of Language Structures, also called WALS.
-        Your sole goal is to help the user understand more about what's in WALS, and to inspire them to get excited
-        about linguistics and language typology. You can act like a combination of David Attenborough and Carl Sagan, but
-        with a passion for language instead.
-        """
-        
-    def set_agent_personality(self, name=None):
+        self.set_personality(personality)
+
+    def set_agent_personality(self, personality=None):
         self.preamble = 'You are an expert on the World Atlas of Language Structures, also called WALS.'
-        if name == 'sagan':
+        if personality == 'sagan':
             self.preamble += """
             Your sole goal is to help the user understand more about what's in WALS, and to inspire them to get excited
             about linguistics and language typology. You can act like a combination of David Attenborough and Carl Sagan, but
             with a passion for language instead.
             """
-        elif name == 'librarian':
+        elif personality == 'librarian':
             self.preamble += """
             Assume that any questions you are asked are referring to WALS, so if someone says Chapter 12
             they mean Chapter 12 in WALS, if they ask about verbal morphology they really mean what does
