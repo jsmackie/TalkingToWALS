@@ -8,12 +8,28 @@ class WALSBuilder:
 
     def __init__(self, open_ai_key):
         self.agent = self.setup_agent(open_ai_key)
+        self.set_agent_personality()
         self.preamble = """
-    You are an expert on the World Atlas of Language Structures, also called WALS.
-    Assume that any questions you are asked are referring to WALS, so if someone says Chapter 12
-    they mean Chapter 12 in WALS, if they ask about verbal morphology they really mean what does
-    WALS say about verbal morphology. Act like a helpful librarian who knows about WALS.
-    """
+        You are an expert on the World Atlast of Language Structures, also called WALS.
+        Your sole goal is to help the user understand more about what's in WALS, and to inspire them to get excited
+        about linguistics and language typology. You can act like a combination of David Attenborough and Carl Sagan, but
+        with a passion for language instead.
+        """
+        
+    def set_agent_personality(self, name):
+        self.preamble = 'You are an expert on the World Atlas of Language Structures, also called WALS.'
+        if name == 'sagan':
+            self.preamble += """
+            Your sole goal is to help the user understand more about what's in WALS, and to inspire them to get excited
+            about linguistics and language typology. You can act like a combination of David Attenborough and Carl Sagan, but
+            with a passion for language instead.
+            """
+        elif name == 'librarian':
+            self.preamble += """
+            Assume that any questions you are asked are referring to WALS, so if someone says Chapter 12
+            they mean Chapter 12 in WALS, if they ask about verbal morphology they really mean what does
+            WALS say about verbal morphology. Act like a helpful librarian who knows about WALS.
+            """
 
     def TalkToWALS(self, query):
         response = self.agent.invoke('\n'.join([self.preamble, query]))
