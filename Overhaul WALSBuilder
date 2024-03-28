@@ -1,0 +1,407 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/jsmackie/TalkingToWALS/blob/mainline/Overhaul%20WALSBuilder\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 4,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7SKJgHx3NdzU",
+        "outputId": "312d4312-0e04-4c06-fbfb-d22a613f0f2c"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m145.1/145.1 kB\u001b[0m \u001b[31m3.4 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m810.5/810.5 kB\u001b[0m \u001b[31m8.9 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m1.8/1.8 MB\u001b[0m \u001b[31m14.3 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m214.0/214.0 kB\u001b[0m \u001b[31m17.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m17.1/17.1 MB\u001b[0m \u001b[31m40.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m3.1/3.1 MB\u001b[0m \u001b[31m51.3 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m75.6/75.6 kB\u001b[0m \u001b[31m7.4 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m1.8/1.8 MB\u001b[0m \u001b[31m56.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m273.0/273.0 kB\u001b[0m \u001b[31m19.3 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m86.9/86.9 kB\u001b[0m \u001b[31m9.6 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m262.9/262.9 kB\u001b[0m \u001b[31m20.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m92.1/92.1 kB\u001b[0m \u001b[31m8.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h  Preparing metadata (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m312.4/312.4 kB\u001b[0m \u001b[31m30.1 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m144.8/144.8 kB\u001b[0m \u001b[31m13.1 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m8.7/8.7 MB\u001b[0m \u001b[31m70.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m60.8/60.8 kB\u001b[0m \u001b[31m6.4 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m129.9/129.9 kB\u001b[0m \u001b[31m14.1 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m49.4/49.4 kB\u001b[0m \u001b[31m4.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m77.9/77.9 kB\u001b[0m \u001b[31m9.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m58.3/58.3 kB\u001b[0m \u001b[31m6.1 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m53.0/53.0 kB\u001b[0m \u001b[31m5.7 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m71.5/71.5 kB\u001b[0m \u001b[31m7.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h  Building wheel for ffmpy (setup.py) ... \u001b[?25l\u001b[?25hdone\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install -qU \\\n",
+        "    cohere \\\n",
+        "    langchain \\\n",
+        "    tiktoken \\\n",
+        "    pinecone-client \\\n",
+        "    langchain-openai \\\n",
+        "    langchain-pinecone \\\n",
+        "    gradio"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 5,
+      "metadata": {
+        "id": "7J6pKZSz0uyZ"
+      },
+      "outputs": [],
+      "source": [
+        "from google.colab import userdata\n",
+        "from langchain_pinecone import PineconeVectorStore as LangChainPinecone\n",
+        "from langchain_openai import ChatOpenAI as LangChainChatOpenAI\n",
+        "from langchain.chains import RetrievalQA\n",
+        "from langchain_openai import OpenAIEmbeddings as LangChainOpenAIEmbeddings\n",
+        "from langchain_pinecone import PineconeVectorStore as LangChainPinecone\n",
+        "from pinecone import Pinecone\n",
+        "import re"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "class ChapterData:\n",
+        "\n",
+        "  def __init__(self):\n",
+        "    self.overviews = self.load_data('overview_details.txt', '\\n-----\\n\\n')\n",
+        "    self.languages = self.load_data('languages_per_chapter.txt', '\\n' )\n",
+        "\n",
+        "  def load_data(self, filename, splitter):\n",
+        "    d = dict()\n",
+        "    with open(f'/content/drive/MyDrive/WALS/{filename}', encoding='utf-8') as f:\n",
+        "      data = f.read()\n",
+        "    chunks = data.split(splitter)\n",
+        "    for chunk in chunks:\n",
+        "      try:\n",
+        "        chapter = chunk.split(' ', maxsplit=2)[:2][1]\n",
+        "        d[chapter] = chunk\n",
+        "      except IndexError:\n",
+        "        pass #ignore blanks at end of file\n",
+        "    return d"
+      ],
+      "metadata": {
+        "id": "bx5mLlalsvof"
+      },
+      "execution_count": 6,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 44,
+      "metadata": {
+        "id": "D4-Hwg_XiDgp"
+      },
+      "outputs": [],
+      "source": [
+        "class WALSBuilder:\n",
+        "\n",
+        "    def __init__(self, open_ai_key, pinecone_key, top_k=3):\n",
+        "        self.index = self.setup_index(api_key=pinecone_key, index_name='starter-index')\n",
+        "        self.embeddings = self.setup_embeddings(api_key=open_ai_key, model='text-embedding-ada-002')\n",
+        "        self.llm = self.setup_llm(api_key=open_ai_key)\n",
+        "        self.top_k = top_k\n",
+        "\n",
+        "        #self.agent = self.setup_agent(open_ai_key, pinecone_key)\n",
+        "        #self.set_agent_personality(personality)\n",
+        "\n",
+        "        self.system_prompt = self.set_system_prompt()\n",
+        "\n",
+        "        self.reg_ex = re.compile(r'(?i)chapter \\d+')\n",
+        "        self.chapter_data = ChapterData()\n",
+        "\n",
+        "    def set_system_prompt(self):\n",
+        "\n",
+        "        return \"\"\"Your Role: You are an expert on the World Atlas of Language Structures, also called WALS. \\\n",
+        "                        You main goal is to help the user navigate WALS and learn about lingustics and language typology. Try to be brief and provide \\\n",
+        "                        consice summaries. Sythesize information across chapters to help the user get a better understanding of topics they ask about.\n",
+        "                        If you ever need to provide a URL, the template is http://www.wals.info/chapter/X where X is the chapter number \\\n",
+        "                        \"\"\"\n",
+        "\n",
+        "    def TalkToWALS(self, query):\n",
+        "        extras = self.process_message(query)\n",
+        "        message = '\\n'.join(['Please help the user with this query:', query])\n",
+        "        send_to_llm = ''.join([self.system_prompt, extras, message])\n",
+        "\n",
+        "        response = self.llm.invoke(send_to_llm)\n",
+        "        return response.content\n",
+        "\n",
+        "    def setup_index(self, api_key, index_name):\n",
+        "      pc = Pinecone(api_key=api_key)\n",
+        "      index = pc.Index(index_name)\n",
+        "      return index\n",
+        "\n",
+        "    def setup_embeddings(self, api_key, model):\n",
+        "        embeds = LangChainOpenAIEmbeddings(openai_api_key=api_key,\n",
+        "                                           model=model)\n",
+        "        return embeds\n",
+        "\n",
+        "    def setup_llm(self, api_key, model_name='gpt-3.5-turbo', temperature=0.2):\n",
+        "      llm = LangChainChatOpenAI(\n",
+        "            openai_api_key=api_key,\n",
+        "            model_name=model_name,\n",
+        "            temperature=temperature)\n",
+        "      return llm\n",
+        "\n",
+        "    def setup_agent(self, open_ai_key, pinecone_key):\n",
+        "        pc = Pinecone(api_key=pinecone_key)\n",
+        "        index = pc.Index('starter-index')\n",
+        "\n",
+        "        embeddings = LangChainOpenAIEmbeddings(model='text-embedding-ada-002',\n",
+        "                                               openai_api_key=open_ai_key)\n",
+        "\n",
+        "\n",
+        "        vectorstore = LangChainPinecone(index, embeddings, text_key='text')\n",
+        "\n",
+        "        llm = LangChainChatOpenAI(\n",
+        "            openai_api_key=open_ai_key,\n",
+        "            model_name='gpt-3.5-turbo',\n",
+        "            temperature=0.2\n",
+        "        )\n",
+        "\n",
+        "        agent = RetrievalQA.from_chain_type(\n",
+        "            llm=llm,\n",
+        "            retriever=vectorstore.as_retriever()\n",
+        "        )\n",
+        "        return agent\n",
+        "\n",
+        "    def query_pinecone(self, message, threshold=0.85):\n",
+        "      #The default threshold was found by manually checking a bunch of queries\n",
+        "      #Anything less than .8 is off topic, we use 0.85 to be really sure\n",
+        "      results = list()\n",
+        "      message_embeddings = self.embeddings.embed_documents([message])\n",
+        "      top_k = self.index.query(vector=message_embeddings,\n",
+        "                               top_k=self.top_k,\n",
+        "                               include_metadata=True)\n",
+        "      for result in top_k['matches']:\n",
+        "        if result['score'] > threshold:\n",
+        "          results.append(result['metadata']['text'])\n",
+        "      return results\n",
+        "\n",
+        "\n",
+        "    def check_for_chapter_references(self, message):\n",
+        "      results = list()\n",
+        "      chapter_mentions = self.reg_ex.findall(message)\n",
+        "      if chapter_mentions is not None:\n",
+        "        for chapter in chapter_mentions:\n",
+        "          number = chapter.split(' ')[-1]\n",
+        "          results.append('- '+self.chapter_data.overviews[number])\n",
+        "          #results.append('- '+self.chapter_data.languages[number])\n",
+        "      return results\n",
+        "\n",
+        "    def process_message(self, message):\n",
+        "      extras = list()\n",
+        "      extras.append('Here is some additional information that might be helpful in answering the user\\'s question: ')\n",
+        "\n",
+        "      #First query Pinecone and get any high probability matches\n",
+        "      extras.extend(self.query_pinecone(message))\n",
+        "\n",
+        "      #Next check for references to specific chapters\n",
+        "      extras.extend(self.check_for_chapter_references(message))\n",
+        "\n",
+        "      if len(extras) > 1:\n",
+        "        extras = '\\n'.join(extras)\n",
+        "      else:\n",
+        "        extras = 'You aren\\'t able to find any additional information about the user\\'s query in WALS. Apologize to the user and politely ask them to rephrase.'\n",
+        "      return extras\n",
+        "\n",
+        "    def construct_context(self, history, turns):\n",
+        "      context_message = ['Here\\'s some recent history of the conversation for context:\\n']\n",
+        "      for turn in history[-turns:]:\n",
+        "        context_message.append(f'You said: {turn[0]}\\n')\n",
+        "        context_message.append(f'User said: {turn[1]}\\n', )\n",
+        "      context_message.append('----------\\n')\n",
+        "      context_message = ' '.join(context_message)\n",
+        "      return context_message\n",
+        "\n",
+        "\n",
+        "    def interact(self, message, history, turns_in_context=3):\n",
+        "        #Add context about previous interactions\n",
+        "        context = self.construct_context(history, turns_in_context)\n",
+        "\n",
+        "        #Look up additional information about the message\n",
+        "        #This includes information such as authorship, typology data, or lists of languages in a chapter\n",
+        "        #It's stored and searched separately from the main WALS chapter data because it 'pollutes' the search results\n",
+        "        extras = self.process_message(message)\n",
+        "\n",
+        "        #Make a basic instruction from the user's query\n",
+        "        instruction = '\\n'.join(['Given all this context, please help the user with this query:', message])\n",
+        "\n",
+        "        #Glue it all together and send to the LLM\n",
+        "        send_to_llm = ''.join([self.system_prompt, context, extras, instruction])\n",
+        "        response = self.llm.invoke(send_to_llm)\n",
+        "        text = response['result']\n",
+        "        return text"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 45,
+      "metadata": {
+        "id": "IDaphgUF1fSt"
+      },
+      "outputs": [],
+      "source": [
+        "agent = WALSBuilder(userdata.get('OPENAI_KEY'), userdata.get('PINECONE_TOKEN'))"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 48,
+      "metadata": {
+        "id": "awoe5eJ1_eNS",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 72
+        },
+        "outputId": "588bceeb-f101-4d4c-f5a0-cb3554d3267e"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "'In Siberian languages, the velar nasal ŋ is lacking word-initially in several language groups, including Buriat (Mongolic), most Siberian Turkic languages, southern Samoyedic languages (Uralic), Khanty and Mansi (Uralic, Ob-Ugric), and Ket (isolate). This absence of the velar nasal ŋ in word-initial position is a common feature in these languages. If you would like to explore this topic further, you can refer to Anderson 2003a, 2003b for more information on ŋ in the languages of Siberia.'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 48
+        }
+      ],
+      "source": [
+        "agent.TalkToWALS('Tell me something about Siberian languages and velar nasals')"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "R11ra9o08NqJ"
+      },
+      "outputs": [],
+      "source": [
+        "import gradio as gr"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 633
+        },
+        "id": "KFDK2T8nHBZj",
+        "outputId": "5b608fe9-f0bd-421a-9948-a99d2c8c8fbe"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Colab notebook detected. This cell will run indefinitely so that you can see errors and logs. To turn off, set debug=False in launch().\n",
+            "Running on public URL: https://29ef287deb70b15505.gradio.live\n",
+            "\n",
+            "This share link expires in 72 hours. For free permanent hosting and GPU upgrades, run `gradio deploy` from Terminal to deploy to Spaces (https://huggingface.co/spaces)\n"
+          ]
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.HTML object>"
+            ],
+            "text/html": [
+              "<div><iframe src=\"https://29ef287deb70b15505.gradio.live\" width=\"100%\" height=\"500\" allow=\"autoplay; camera; microphone; clipboard-read; clipboard-write;\" frameborder=\"0\" allowfullscreen></iframe></div>"
+            ]
+          },
+          "metadata": {}
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Keyboard interruption in main thread... closing server.\n",
+            "Killing tunnel 127.0.0.1:7860 <> https://29ef287deb70b15505.gradio.live\n"
+          ]
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": []
+          },
+          "metadata": {},
+          "execution_count": 12
+        }
+      ],
+      "source": [
+        "ui = gr.ChatInterface(agent.interact,\n",
+        "                 textbox=gr.Textbox(placeholder=\"Ask me about the World Atlas of Language Structures\"),\n",
+        "                 title=\"Talking To WALS\",\n",
+        "                 description=\"Ask me about the World Atlas of Language Structures\",\n",
+        "                 examples=[\"Tell me about a random chapter\",\n",
+        "                           \"Which chapters did Ian Maddieson contribute to?\",\n",
+        "                           \"Is there any information about verb tenses?\"],\n",
+        "                 )\n",
+        "\n",
+        "ui.launch(share=True, debug=True)\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "IuSvQn9zLvWN"
+      },
+      "outputs": [],
+      "source": [
+        "# !wget https://raw.githubusercontent.com/jsmackie/TalkingToWALS/preamble_types/wals.py -O wals.py\n",
+        "# !wget https://raw.githubusercontent.com/jsmackie/TalkingToWALS/mainline/HidingBehindWALS.py -O HidingBehindWALS.py\n",
+        "# import wals"
+      ]
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "mount_file_id": "1dj7IrEZNFcMgfiWtZqeRAQy2iA80_RB2",
+      "authorship_tag": "ABX9TyO4hXsgSmmKKOMvAUSMoHfe",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
