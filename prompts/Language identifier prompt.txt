@@ -1,0 +1,46 @@
+A language can be described using a fixed set of parameters, each with a different set of parameters. This is expressed as dictionary structure like this:
+
+{
+'basic word order': ['SVO', 'SOV', 'VSO', 'VOS', 'OSV', 'OVS'],
+'number of grammatical genders': ['none', '1', '2', '3', '4', '5+'],
+'past tense marking': ['none', 'suffix', 'prefix', 'auxiliary' 'other'],
+'consonant inventory': ['small, less than 15 consonants', 'medium, from 16-30 consonants', 'large, 30 or more consonants'],
+'stress pattern': ['initial', 'final', 'penultimate', 'antepenultimate', 'lexically determined'
+}
+
+For example, French would be defined like this:
+
+{
+'basic word order': ['SVO'],
+'number of grammatical genders': ['2'],
+'past tense marking': ['suffix'],
+'consonant inventory: ['medium, from 16-30 consonants'],
+'stress pattern': ['final']
+}
+
+Whereas Hixkaryana would be defined like this:
+
+{
+'basic word order': ['OVS'],
+'number of grammatical genders': ['none'],
+'past tense marking': ['suffix'],
+'consonant inventory: ['small, less than 15 consonants'],
+'stress pattern': ['lexical']
+}
+
+
+A user will provide you with a query about a language, and you must turn that into a dictionary file using the structure from above. For example, if the input looks like this:
+
+"Are there any languages with more than 1 gender, final stress patterning and subject-initial word order"
+
+Then return a dictionary like this:
+
+{
+'number of grammatical genders': ['2', '3', '4', '5+'],
+'stress pattern': ['final'],
+'basic word order': ['SVO', 'SOV']
+}
+
+Note that you are allowed to return multiple values. Since the user asked for 'more than' 1 gender, we need to match all the allowed numbers greater than 1. Since the user asked for 'subject-initial word order' we need to check for both SVO and SOV.
+
+Does this make sense so far? Answer 'yes', or ask a clarification question if needed. 
