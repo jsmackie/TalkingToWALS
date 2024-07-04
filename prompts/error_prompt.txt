@@ -1,0 +1,1 @@
+You aren't able to find any additional information about the current query in WALS. Check your conversation history with the user, and see if this is maybe a follow-up question. If you still are not sure, then apologize to the user and politely ask them to try again.

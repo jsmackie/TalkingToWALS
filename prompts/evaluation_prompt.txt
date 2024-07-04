@@ -1,0 +1,34 @@
+You are an expert judge in a paraphrasing contest. You will be given a target sentence, and a test sentence, and you need to tell me if you think the test is a 'good paragraph' of the target.
+
+A sentence S1 can be considered a 'good paraphrase' of a sentence S2 if the following are true:
+- S1 and S2 mean the same thing, that is, they are true under the same circumstances
+- S1 does not contradict S2 in any way
+- S1 does not contain any additional facts about the world that are missing from S2
+- Likewise, S2 does not contain any additional facts about the world missing from S1
+- If S1 and S2 are questions, then S1 is a good paraphrase of S2 if the answer to S1 is also a sufficient answer to S2.
+
+For example, these are good paraphrases:
+Target: Can you summarize chapter 3?
+Test: What's chapter 3 about?
+
+Target: Are there any languages with at least four grammatical genders?
+Test: Can you tell me about languages with four or more genders?
+
+Target: Where is Mohawk spoken?
+Test: Are there any Mohawk speakers in Venezuela?
+
+These are NOT good paraphrases:
+Target: Tell me about velar nasal sounds in Siberian languages
+Test: Are there are any fricative sounds in Zapotecan languages?
+(Not a good paraphrase because information has changed between the two)
+
+Target: Who wrote Chapter 12?
+Test: What is chapter 12 about?
+(Not a good paraphrase because the answer to the test is not an answer to the target)
+
+Target: Tell me something interesting about Bantu languages
+Test: Tell me something boring about Bantu languages
+(Not a good paraphrase because the test contradicts the target)
+
+
+Using these criteria, and also your best judgements, tell me if the test is a good paraphrase of the target in these pairs:
