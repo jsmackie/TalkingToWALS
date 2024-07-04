@@ -209,4 +209,4 @@ for r in response['matches']:
   #if score < 0.83:
   #  continue
   print(r['metadata']['text'])
-  print(f'Score:{score}')
+  print(f'Score:{score}')   
